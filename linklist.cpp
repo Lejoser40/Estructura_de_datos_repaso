@@ -157,10 +157,6 @@ public:
         std::cout << "No se encontro un Nodo \n";
     }
 
-    void insert_at(int position, int value)
-    {
-    }
-
     void remove(int value)
     {
         // Caso 1 lista vacia
@@ -198,6 +194,61 @@ public:
         // Caso 4 Valor no encontrado
         std::cout << "Valor " << value << " no encontrado\n";
     }
+
+    void insert_at(int position, int value)
+    {
+        // Caso 1 posicion invalida
+        if (position < 0 || position > size())
+        {
+            std::cout << "Posición inválida: " << position << "\n";
+            return;
+        }
+
+        // Caso 2 Insertar al inicio
+        if (position == 0)
+        {
+            push_front(value);
+            return;
+        }
+
+        // Caso 5 posicion al final
+        if (position == size())
+        {
+            push_back(value);
+            return;
+        }
+
+        // Caso 3 Posicion en el medio
+        Node *newNode = new Node(value);
+        Node *current = head;
+        Node *prevNode = nullptr;
+        for (int x = 0; x < position; x++)
+        {
+            prevNode = current;
+            current = current->next;
+        }
+        prevNode->next = newNode; // Nodo previo apuntar al nuevo nodo
+        newNode->next = current;  // y nuevo nodo apuntar al existente
+        return;
+    }
+
+    void reverse()
+    {
+        Node *current = head;
+        Node *prevNode = nullptr;
+        Node *nextNode = nullptr;
+        while (current != nullptr)
+        {
+            nextNode = current->next; // Guardar siguiente nodo
+
+            current->next = prevNode; // invertir nodo actual
+
+            prevNode = current; // Avanzar Nodo previo al siguiente
+            current = nextNode; // Avanzar Nodo actual al siguiente
+        }
+        head = prevNode;
+        return;
+    }
 };
 
 int main()
@@ -211,17 +262,35 @@ int main()
     list.push_back(10);
     list.push_back(20);
     list.push_back(30);
+    list.push_back(50);
+    list.push_back(60);
     list.print();
 
     std::cout << "\nPrueba remove \n";
     list.remove(20);
+    std::cout << "\n";
+    list.print();
+    std::cout << "\n";
+
+    std::cout << "\nPrueba insert_at \n";
+    list.insert_at(1, 40);
+    std::cout << "\n";
+    list.print();
+    std::cout << "\n";
+
+    std::cout << "\nPrueba reverse \n";
+    list.reverse();
+    std::cout << "\n";
+    list.print();
     std::cout << "\n";
 
     std::cout << "\nPrueba size \n";
     std::cout << list.size() << " \n";
 
     std::cout << "\nPrueba search \n";
-    list.search(20);
+    list.search(30);
+    std::cout << "\n";
+    list.print();
 
     std::cout << "\nInsertar al inicio\n";
     list.push_front(50);
